@@ -1,0 +1,3 @@
+rootProject.name = 'mjml4j'
+include 'mjml4j-client'
+
