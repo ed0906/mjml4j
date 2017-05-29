@@ -23,7 +23,7 @@ repositories {
 }
 
 dependencies {
-    compile 'ifusion:mjml-client:0.1.0'
+    compile 'ifusion:mjml-client:0.1.1'
 }
 ```
 
