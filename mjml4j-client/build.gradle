@@ -2,7 +2,7 @@ apply plugin: 'maven'
 
 def VERSION = '0.1.0'
 def GROUP = 'ifusion'
-def NAME = 'mjml'
+def NAME = 'mjml-client'
 
 dependencies {
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.8.8.1'

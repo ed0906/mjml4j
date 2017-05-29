@@ -9,6 +9,24 @@ This library currently supports V1 of the MJML API
 
 ### Basic Use
 
+###### Dependency
+
+ - Gradle: In your `build.gradle` add the following:
+ 
+```groovy
+repositories {
+    mavenCentral()
+
+    maven {
+        url "http://nexus-ed0906.rhcloud.com/nexus/content/groups/public/"
+    }
+}
+
+dependencies {
+    compile 'ifusion:mjml-client:0.1.0'
+}
+```
+
 ###### Create a client
 
 ```java
@@ -28,6 +46,7 @@ MJMLClient client = MJMLClient.newDefaultClient()
 ```
 
  - Handling API errors
+ 
  ```java
     RenderRequest request = new RenderRequest("<mjml>...<mjml>");
     try {
