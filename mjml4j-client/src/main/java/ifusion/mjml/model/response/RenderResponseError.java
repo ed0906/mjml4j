@@ -1,7 +1,9 @@
 package ifusion.mjml.model.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RenderResponseError {
 
     private final String message;
@@ -12,7 +14,7 @@ public class RenderResponseError {
     public RenderResponseError(@JsonProperty("message") String message,
                                @JsonProperty("tagName") String tagName,
                                @JsonProperty("formattedMessage") String formattedMessage,
-                               @JsonProperty("lineNumber") Integer lineNumber) {
+                               @JsonProperty("line") Integer lineNumber) {
         this.message = message;
         this.tagName = tagName;
         this.formattedMessage = formattedMessage;

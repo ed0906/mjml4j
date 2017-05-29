@@ -2,5 +2,7 @@
   "html": "html",
   "mjml": "mjml",
   "mjml_version": "version",
-  "errors": []
+  "errors": [
+    {"line": 1, "message": "message", "tagName": "tag", "formattedMessage": "formatted message"}
+  ]
 }

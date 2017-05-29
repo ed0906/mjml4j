@@ -45,7 +45,11 @@ public class MJMLClientRenderTest extends MJMLClientHTTPTestBase {
         RenderResponse response = client.render(request);
 
         // Then
-        assertThat(response.getErrors()).isEmpty();
+        assertThat(response.getErrors()).hasSize(1);
+        assertThat(response.getErrors().get(0).getFormattedMessage()).isEqualTo("formatted message");
+        assertThat(response.getErrors().get(0).getMessage()).isEqualTo("message");
+        assertThat(response.getErrors().get(0).getLineNumber()).isEqualTo(1);
+        assertThat(response.getErrors().get(0).getTagName()).isEqualTo("tag");
         assertThat(response.getHTML()).isEqualTo("html");
         assertThat(response.getMJML()).isEqualTo("mjml");
         assertThat(response.getMJMLVersion()).isEqualTo("version");
