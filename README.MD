@@ -27,6 +27,26 @@ dependencies {
 }
 ```
 
+ - Maven: in your pom.xml add the following `repository` and `dependency` nodes
+ 
+ ```xml
+<project>
+    <repositories>
+        <repository>
+          <id>mjml-client-repo</id>
+          <url>http://nexus-ed0906.rhcloud.com/nexus/content/groups/public/</url>
+        </repository>
+    </repositories>
+    <dependencies>
+        <dependency>
+            <groupId>ifusion</groupId>
+            <artifactId>mjml-client</artifactId>
+            <version>0.1.2</version>
+        </dependency>
+    </dependencies>
+</project>
+```
+
 ###### Create a client
 
 ```java
@@ -34,6 +54,9 @@ MJMLClient client = MJMLClient.newDefaultClient()
                               .withApplicationID("...")
                               .withAPIKey("...");
 ```
+
+You can get an `ApplicationID` and `APIKey` from https://mjml.io/api
+
 
 ###### Render some MJML
 
