@@ -27,7 +27,7 @@ dependencies {
 }
 ```
 
- - Maven: in your pom.xml add the following `repository` and `dependency` nodes
+ - Maven: in your `pom.xml` add the following `repository` and `dependency` nodes
  
  ```xml
 <project>
