@@ -1,6 +1,8 @@
 # MJML4j
 
-A [MJML API](https://mjml.io/api) client for Java
+A [MJML API](https://mjml.io/api) client for Java. 
+
+You can use this library to communicate with the MJML REST Api and convert your pre-built MJML to a HTML email.
 
 
 ### Support
@@ -89,3 +91,8 @@ You can get an `ApplicationID` and `APIKey` from https://mjml.io/api
         // log.warn("Render error: " + s.getMessage());
     }
  ```
+ 
+ ### Building MJML Dynamically
+ 
+ This library currently only supports the conversion of a pre-built MJML document to HTML.
+ MJML document building is a work in progress but for now you can use libraries such as [Jdom2](http://o7planning.org/en/10149/java-jdom2-tutorial)/[Jsoup](http://howtodoinjava.com/jsoup/complete-jsoup-tutorial/) to build your MJML Document Object Model. You can then use this library to convert it to a HTML email.
