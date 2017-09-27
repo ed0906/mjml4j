@@ -20,7 +20,7 @@ repositories {
     mavenCentral()
 
     maven {
-        url "http://nexus-ed0906.rhcloud.com/nexus/content/groups/public/"
+        url "http://www.fusing-ideas.com:8080/nexus/content/groups/public/"
     }
 }
 
