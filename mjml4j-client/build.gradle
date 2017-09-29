@@ -33,7 +33,7 @@ artifacts {
 uploadArchives {
     repositories {
         mavenDeployer {
-            repository(url: "http://www.fusing-ideas.com:8080/nexus/content/repositories/releases/") {
+            repository(url: "http://nexus.fusing-ideas.com/content/repositories/releases/") {
                 authentication(userName: REPOSITORY_USER, password: REPOSITORY_PWD)
             }
             addFilter('clientJar') {artifact, file -> artifact.name == NAME}
