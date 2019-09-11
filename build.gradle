@@ -10,8 +10,8 @@ subprojects {
     sourceSets {
         integrationTest {
             java {
-                compileClasspath += main.output + test.output
-                runtimeClasspath += main.output + test.output
+                compileClasspath += sourceSets.test.runtimeClasspath + sourceSets.main.runtimeClasspath
+                runtimeClasspath += sourceSets.test.runtimeClasspath + sourceSets.main.runtimeClasspath
                 srcDir file('src/integration-test/java')
             }
             resources.srcDir file('src/integration-test/resources')
@@ -24,7 +24,7 @@ subprojects {
     }
 
     task integrationTest(type: Test) {
-        testClassesDir = sourceSets.integrationTest.output.classesDir
+        testClassesDirs = sourceSets.integrationTest.output.classesDirs
         classpath = sourceSets.integrationTest.runtimeClasspath
     }
 

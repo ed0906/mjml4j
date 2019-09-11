@@ -18,14 +18,10 @@ This library currently supports V1 of the MJML API
 ```groovy
 repositories {
     mavenCentral()
-
-    maven {
-        url "http://nexus.fusing-ideas.com/content/groups/public/"
-    }
 }
 
 dependencies {
-    compile 'ifusion:mjml-client:0.1.2'
+    compile 'com.ifusion:mjml-client:1.0.0'
 }
 ```
 
@@ -33,17 +29,11 @@ dependencies {
  
  ```xml
 <project>
-    <repositories>
-        <repository>
-          <id>mjml-client-repo</id>
-          <url>http://nexus-ed0906.rhcloud.com/nexus/content/groups/public/</url>
-        </repository>
-    </repositories>
     <dependencies>
         <dependency>
-            <groupId>ifusion</groupId>
+            <groupId>com.ifusion</groupId>
             <artifactId>mjml-client</artifactId>
-            <version>0.1.2</version>
+            <version>1.0.0</version>
         </dependency>
     </dependencies>
 </project>

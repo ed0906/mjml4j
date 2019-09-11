@@ -1,7 +1,7 @@
 apply plugin: 'maven'
 
-def VERSION = '0.1.2'
-def GROUP = 'ifusion'
+def VERSION = '1.0.0'
+def GROUP = 'com.ifusion'
 def NAME = 'mjml-client'
 
 dependencies {
@@ -23,27 +23,27 @@ task clientJar(type: Jar) {
     baseName = NAME
     dependsOn classes
     from sourceSets.main.output
-    include('ifusion/mjml/**/*')
+    include('com.ifusion/mjml/**/*')
 }
 
-artifacts {
-    archives clientJar
-}
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository(url: "http://nexus.fusing-ideas.com/content/repositories/releases/") {
-                authentication(userName: REPOSITORY_USER, password: REPOSITORY_PWD)
-            }
-            addFilter('clientJar') {artifact, file -> artifact.name == NAME}
-            pom('clientJar') {
-                version = VERSION
-                artifactId = NAME
-                groupId = GROUP
-            }
-        }
-    }
-}
-
-uploadArchives.dependsOn clientJar
+//artifacts {
+//    archives clientJar
+//}
+//
+//uploadArchives {
+//    repositories {
+//        mavenDeployer {
+//            repository(url: "http://nexus.fusing-ideas.com/content/repositories/releases/") {
+//                authentication(userName: REPOSITORY_USER, password: REPOSITORY_PWD)
+//            }
+//            addFilter('clientJar') {artifact, file -> artifact.name == NAME}
+//            pom('clientJar') {
+//                version = VERSION
+//                artifactId = NAME
+//                groupId = GROUP
+//            }
+//        }
+//    }
+//}
+//
+//uploadArchives.dependsOn clientJar
