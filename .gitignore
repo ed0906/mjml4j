@@ -13,7 +13,6 @@ clientBuild
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.ear
 *.zip
@@ -25,7 +24,6 @@ hs_err_pid*
 
 # Gradle
 .gradle
-gradle
 
 # Idea
 .idea
