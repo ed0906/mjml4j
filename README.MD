@@ -21,7 +21,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.ifusion:mjml-client:1.0.0'
+    compile 'io.camassia:mjml-client:1.0.0'
 }
 ```
 
@@ -31,7 +31,7 @@ dependencies {
 <project>
     <dependencies>
         <dependency>
-            <groupId>com.ifusion</groupId>
+            <groupId>io.camassia</groupId>
             <artifactId>mjml-client</artifactId>
             <version>1.0.0</version>
         </dependency>
