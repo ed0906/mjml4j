@@ -1,8 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'signing'
 apply plugin: 'maven'
-
-def VERSION = '1.0.0'
+apply from: 'publish.gradle'
 
 sourceCompatibility = 1.8
 
@@ -46,68 +45,6 @@ dependencies {
 
     integrationTestCompile group: 'commons-cli', name: 'commons-cli', version: '1.4'
 
-}
-
-signing {
-    //def signingKey = findProperty("signingKey")
-    //def signingPassword = findProperty("signingPassword")
-    //useInMemoryPgpKeys(signingKey, signingPassword)
-    sign configurations.archives
-}
-
-// Add Javadoc JAR and sources JAR to artifact
-task javadocJar(type: Jar) {
-    classifier = 'javadoc'
-    from javadoc
-}
-
-task sourcesJar(type: Jar) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
-
-artifacts {
-    archives javadocJar, sourcesJar
-}
-
-// Build, sign, and upload
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            beforeDeployment {
-                MavenDeployment deployment -> signing.signPom(deployment)
-            }
-            repository(url: maven2_url) {
-                authentication(userName: System.getenv('SONATYPE_USERNAME'), password: System.getenv('SONATYPE_PASSWORD'))
-            }
-            snapshotRepository(url: snapshot_url) {
-                authentication(userName: System.getenv('SONATYPE_USERNAME'), password: System.getenv('SONATYPE_PASSWORD'))
-            }
-            pom.project {
-                name project_name
-                packaging 'jar'
-                description project_description
-                url project_url
-                scm {
-                    connection project_scm
-                    developerConnection project_scm
-                    url project_url
-                }
-                licenses {
-                    license {
-                        name project_license_slug
-                        url project_license_url
-                    }
-                }
-                developers {
-                    developer {
-                        id project_developer
-                        name project_developer
-                    }
-                }
-            }
-        }
-    }
 }
 
 task Wrapper(type: Wrapper) {

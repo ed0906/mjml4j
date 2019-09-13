@@ -1,0 +1,144 @@
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+def get(String name, String fallback) {
+    def env = System.getenv(name)
+    if(env != null){
+        System.out.println("Using property [${name}] from environment variables")
+        return env
+    } else if(hasProperty(name)) {
+        System.out.println("Using property [${name}] from gradle properties")
+        return getProperty(name)
+    }
+    System.out.println("Using property [${name}] from fallback")
+    return fallback
+}
+
+def get(String name) {
+    def env = System.getenv(name)
+    if(env != null){
+        System.out.println("Using property [${name}] from environment variables")
+        return java.util.Optional.of(env)
+    } else if(hasProperty(name)) {
+        System.out.println("Using property [${name}] from gradle properties")
+        return java.util.Optional.of(getProperty(name))
+    }
+    return java.util.Optional.empty()
+}
+
+def getOrThrow(String name) {
+    def param = get(name)
+    if (param.isPresent()) {
+        return param.get()
+    }
+    throw new IllegalArgumentException("Property [${name}] did not exist")
+}
+
+def isReleaseBuild() {
+    def is = !VERSION.contains("SNAPSHOT")
+    System.out.println(is? "This is Release Build [${VERSION}]": "This is Snapshot Build [${VERSION}]")
+    return is
+}
+
+def getReleaseRepositoryUrl() {
+    return get('RELEASE_REPOSITORY_URL', 'https://oss.sonatype.org/service/local/staging/deploy/maven2/')
+}
+
+def getSnapshotRepositoryUrl() {
+    return get('SNAPSHOT_REPOSITORY_URL', 'https://oss.sonatype.org/content/repositories/snapshots/')
+}
+
+afterEvaluate { project ->
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+                repository(url: getReleaseRepositoryUrl()) {
+                    def ossrhUsername = getOrThrow('OSSRH_USERNAME')
+                    def ossrhPassword = getOrThrow('OSSRH_PASSWORD')
+
+                    authentication(userName: ossrhUsername, password: ossrhPassword)
+                }
+
+                snapshotRepository(url: getSnapshotRepositoryUrl()) {
+                    def ossrhUsername = getOrThrow('OSSRH_USERNAME')
+                    def ossrhPassword = getOrThrow('OSSRH_PASSWORD')
+
+                    authentication(userName: ossrhUsername, password: ossrhPassword)
+                }
+
+                pom.groupId = GROUP_ID
+                pom.artifactId = ARTIFACT_ID
+                pom.version = VERSION
+
+                pom.project {
+                    name ARTIFACT_ID
+                    packaging PROJECT_PACKAGING
+                    description PROJECT_DESCRIPTION
+                    url PROJECT_URL
+
+                    scm {
+                        url SCM_URL
+                        connection SCM_CONNECTION
+                        developerConnection SCM_CONNECTION
+                    }
+
+                    licenses {
+                        license {
+                            name LICENSE_NAME
+                            url LICENSE_URL
+                        }
+                    }
+
+                    organization {
+                        name = ORGANIZATION_NAME
+                        url = ORGANIZATION_URL
+                    }
+
+                    developers {
+                        developer {
+                            id DEVELOPER_ID
+                            name DEVELOPER_NAME
+                            email DEVELOPER_EMAIL
+                        }
+                    }
+                }
+            }
+        }
+
+        signing {
+            required { isReleaseBuild() && gradle.taskGraph.hasTask("uploadArchives") }
+
+            def signingPassword = getOrThrow("GPG_SIGNING_PASSWORD")
+            if(get("GPG_SIGNING_KEY_ID").isPresent() && get("GPG_SIGNING_KEY_FILE").isPresent()){
+                System.out.println("Signing using keyring file")
+                def signingKeyId = getOrThrow('GPG_SIGNING_KEY_ID')
+                def signingKeyFile = getOrThrow('GPG_SIGNING_KEY_FILE')
+                ext."signing.keyId" = signingKeyId
+                ext."signing.secretKeyRingFile" = signingKeyFile
+                ext."signing.password" = signingPassword
+            } else if(get("GPG_SIGNING_KEY").isPresent()) {
+                System.out.println("Signing using key and password")
+                def signingKey = getOrThrow("GPG_SIGNING_KEY")
+                useInMemoryPgpKeys(signingKey, signingPassword)
+            }
+
+            sign configurations.archives
+        }
+
+        task javadocJar(type: Jar) {
+            classifier = 'javadoc'
+            from javadoc
+        }
+
+        task sourcesJar(type: Jar) {
+            classifier = 'sources'
+            from sourceSets.main.allSource
+        }
+
+        artifacts {
+            archives javadocJar, sourcesJar
+        }
+    }
+}
