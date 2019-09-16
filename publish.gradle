@@ -28,7 +28,25 @@ artifacts {
     archives jar, javadocJar, sourcesJar
 }
 
+def getOptional(String name) {
+    def env = System.getenv(name)
+    if(env != null){
+        System.out.println("Using property [${name}] from environment variables")
+        return java.util.Optional.of(env)
+    } else if(hasProperty(name)) {
+        System.out.println("Using property [${name}] from gradle properties")
+        return java.util.Optional.of(getProperty(name))
+    }
+    return java.util.Optional.empty()
+}
+
 signing {
+    required {
+        def snapshot = project.version.contains("SNAPSHOT")
+        def uploading = project.gradle.taskGraph.hasTask("uploadArchives")
+        System.out.println("Signing Status [snapshot=" + snapshot + ", publishing=" + uploading + "]")
+        !snapshot && uploading
+    }
     sign configurations.archives
 }
 
@@ -37,12 +55,14 @@ uploadArchives {
         mavenDeployer {
             beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
+            def username = getOptional('OSSRH_USERNAME').orElse('')
+            def password = getOptional('OSSRH_PASSWORD').orElse('')
             repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                authentication(userName: OSSRH_USERNAME, password: OSSRH_PASSWORD)
+                authentication(userName: username, password: password)
             }
 
             snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                authentication(userName: OSSRH_USERNAME, password: OSSRH_PASSWORD)
+                authentication(userName: username, password: password)
             }
 
             pom.project {
