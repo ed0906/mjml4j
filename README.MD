@@ -32,7 +32,7 @@ dependencies {
     <dependencies>
         <dependency>
             <groupId>io.camassia</groupId>
-            <artifactId>mjml-client</artifactId>
+            <artifactId>mjml4j-client</artifactId>
             <version>1.0.0</version>
         </dependency>
     </dependencies>
