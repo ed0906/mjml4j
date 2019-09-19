@@ -13,6 +13,9 @@ String pomLicenseUrl = LICENSE_URL
 String pomDeveloperId = DEVELOPER_ID
 String pomDeveloperEmail = DEVELOPER_EMAIL
 String pomDeveloperName = DEVELOPER_NAME
+String organizationName = ORGANIZATION_NAME
+String organizationUrl = ORGANIZATION_URL
+String organizationLogo = ORGANIZATION_LOGO_URL
 
 task javadocJar(type: Jar) {
     classifier = 'javadoc'
@@ -85,13 +88,17 @@ uploadArchives {
                         distribution 'repo'
                     }
                 }
-
                 developers {
                     developer {
                         id pomDeveloperId
                         name pomDeveloperName
                         email pomDeveloperEmail
                     }
+                }
+                organization {
+                    name = organizationName
+                    url = organizationUrl
+                    logo = organizationLogo
                 }
             }
         }
