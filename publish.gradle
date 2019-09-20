@@ -39,16 +39,20 @@ def getOptional(String name) {
         System.out.println("Using property [${name}] from gradle properties")
         return java.util.Optional.of(getProperty(name))
     }
+    System.out.println("Missing property [${name}]")
     return java.util.Optional.empty()
 }
 
 signing {
     required {
-        def snapshot = project.version.contains("SNAPSHOT")
+        def release = !project.version.contains("SNAPSHOT")
         def uploading = project.gradle.taskGraph.hasTask("uploadArchives")
-        System.out.println("Signing Status [snapshot=" + snapshot + ", publishing=" + uploading + "]")
-        !snapshot && uploading
+        System.out.println("Signing Status [release=" + release + ", publishing=" + uploading + "]")
+        release && uploading
     }
+    String key = getOptional("GPG_SIGNING_KEY").orElse("Unknown")
+    String password = getOptional("GPG_SIGNING_PASSWORD").orElse("Unknown")
+    useInMemoryPgpKeys(key, password)
     sign configurations.archives
 }
 
