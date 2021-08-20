@@ -44,7 +44,7 @@ dependencies {
 ```java
 MJMLClient client = MJMLClient.newDefaultClient()
                               .withApplicationID("...")
-                              .withAPIKey("...");
+                              .withApplicationKey("...");
 ```
 
 You can get an `ApplicationID` and `APIKey` from https://mjml.io/api
